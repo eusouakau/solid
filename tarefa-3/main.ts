@@ -1,17 +1,12 @@
 interface Funcionario {
     nome: string;
     cargaHoraria: number;
-    trabalha(): void;
 }
 
 interface FuncionarioEfetivo extends Funcionario {
     salario: number;
     calculaSalarioLiquido(): number;
     calculaParticipacaoDeLucros(lucro: number): number;
-}
-
-interface FuncionarioVoluntario extends Funcionario {
-    escreveRelatorio(): void;
 }
 
 class FuncionarioEfetivo implements FuncionarioEfetivo {
@@ -36,13 +31,11 @@ class FuncionarioEfetivo implements FuncionarioEfetivo {
     }
 }
 
-class FuncionarioVoluntario implements Funcionario {
-    orientador: Funcionario;
-
-    constructor(nome: string, cargaHorariaExtensao: number, funciarioEfetivo: Funcionario) {
+class Pesquisador {
+    constructor(public nome: string, public cargaHorariaExtensao: number, public orientador: Funcionario) {
         this.nome = nome;
-        this.cargaHoraria = cargaHorariaExtensao;
-        this.orientador = funciarioEfetivo;
+        this.cargaHorariaExtensao = cargaHorariaExtensao;
+        this.orientador = orientador;
     }
 
     escreveRelatorio(): void {
@@ -50,20 +43,17 @@ class FuncionarioVoluntario implements Funcionario {
     }
 
     trabalha(): void {
-        console.log(`Me chamo ${this.nome} e eu pesquiso ${this.cargaHoraria} horas por semana para cumprir na minha graduação`);
+        console.log(`Me chamo ${this.nome} e eu pesquiso ${this.cargaHorariaExtensao} horas por semana para cumprir na minha graduação`);
     }
-
 }
 
 const funcionarioEfetivo = new FuncionarioEfetivo("João", 40, 2400);
-const funcionarioVoluntario = new FuncionarioVoluntario("Enzo", 20, funcionarioEfetivo);
+const pesquisador = new Pesquisador("Enzo", 20, funcionarioEfetivo);
 
-//Efetivo
 console.log("nome:", funcionarioEfetivo.nome);
 console.log("salário bruto:", funcionarioEfetivo.salario);
 console.log("salário líquido:", funcionarioEfetivo.calculaSalarioLiquido());
 console.log("salário com PL:", funcionarioEfetivo.calculaParticipacaoDeLucros(2.5), "\n");
 
-//Voluntário
-console.log("nome:", funcionarioVoluntario.nome);
-funcionarioVoluntario.escreveRelatorio();
+console.log("nome:", pesquisador.nome);
+pesquisador.escreveRelatorio();
