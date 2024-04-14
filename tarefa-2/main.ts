@@ -1,39 +1,48 @@
 {
-    const GANHO_POR_HORA_CLT = 24;
-    const CARGA_HORARIA_DIARIA_CLT = 8;
-
-    const GANHO_POR_HORA_ESTAGIARIO = 14;
-    const CARGA_HORARIA_DIARIA_ESTAGIARIO = 4;
-
     const MES_COMERCIAL = 20; //dias trabalhados no mês
 
     interface ContratoRemuneravel{
         titulo: string;
-        remunecao(): number;
+        remuneracao(): number;
     }
-    class ContratoClt {
+    class ContratoClt implements ContratoRemuneravel{
+        private GANHO_POR_HORA_CLT = 24;
+        private CARGA_HORARIA_DIARIA_CLT = 8;
+        remuneracao(): number {
+            return this.GANHO_POR_HORA_CLT * this.CARGA_HORARIA_DIARIA_CLT;
+        }
         titulo: string = 'CLT';
     }
 
-    class Estagio {
+    class Estagio implements ContratoRemuneravel{
+        private GANHO_POR_HORA_ESTAGIARIO = 14;
+        private CARGA_HORARIA_DIARIA_ESTAGIARIO = 4;
+        remuneracao(): number {
+            return this.GANHO_POR_HORA_ESTAGIARIO * this.CARGA_HORARIA_DIARIA_ESTAGIARIO;
+        }
         titulo: string = 'Estágiario';
     }
 
-    class FolhaDePagamento {
-        static calcularSalarioMensal(funcionario: ContratoClt | Estagio): number {
-            if (funcionario instanceof ContratoClt) {
-                return GANHO_POR_HORA_CLT * CARGA_HORARIA_DIARIA_CLT * MES_COMERCIAL;
+    class ContratoPJ implements ContratoRemuneravel{
+        private GANHO_POR_HORA_PJ = 36;
+        private CARGA_HORARIA_DIARIA_PJ = 8;
+        remuneracao(): number {
+            return this.GANHO_POR_HORA_PJ * this.CARGA_HORARIA_DIARIA_PJ;
+        }
+        titulo: string = 'PJ';
+    }
 
-            } else if (funcionario instanceof Estagio) {
-                return GANHO_POR_HORA_ESTAGIARIO * CARGA_HORARIA_DIARIA_ESTAGIARIO * MES_COMERCIAL;
-            }
-            return 0;
+    class FolhaDePagamento {
+        static calcularSalarioMensal(funcionario: ContratoRemuneravel): number {
+            return funcionario.remuneracao() * MES_COMERCIAL;
         }
     }
 
     const funcionarioClt = new ContratoClt();
     const funcionarioEstagiario = new Estagio();
+    const funcionarioPJ = new ContratoPJ();
 
-    console.log(`Sou ${funcionarioClt.titulo} e meu salário líquido mensal é R$ ${FolhaDePagamento.calcularSalarioMensal(funcionarioClt)}`)
-    console.log(`Sou ${funcionarioEstagiario.titulo} e meu salário líquido mensal é R$ ${FolhaDePagamento.calcularSalarioMensal(funcionarioEstagiario)}`)
+    console.log(`Sou ${funcionarioClt.titulo} e meu salário líquido mensal é R$ ${FolhaDePagamento.calcularSalarioMensal(funcionarioClt)}`);
+    console.log(`Sou ${funcionarioEstagiario.titulo} e meu salário líquido mensal é R$ ${FolhaDePagamento.calcularSalarioMensal(funcionarioEstagiario)}`);
+    console.log(`Sou ${funcionarioPJ.titulo} e meu salário líquido mensal é R$ ${FolhaDePagamento.calcularSalarioMensal(funcionarioPJ)}`);
 }
