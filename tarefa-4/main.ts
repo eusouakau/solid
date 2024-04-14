@@ -39,6 +39,19 @@ class PagamentoPorPix implements Pagamento {
    
 }
 
+class PagamentoPorBoleto implements Pagamento {
+    valor: number;
+
+    constructor(valor: number) {
+        this.valor = valor;
+    }
+
+    pagar(): void {
+        console.log(`O pagamento de ${this.valor} será feito por boleto.`);
+    }
+   
+}
+
 const pagamentoCheque = new PagamentoCheque(100);
 pagamentoCheque.pagar();
 
@@ -47,3 +60,6 @@ pagamentoDinheiro.pagar();
 
 const pagamentoPix = new PagamentoPorPix(300);
 pagamentoPix.pagar();
+
+const pagamentoBoleto = new PagamentoPorBoleto(400);
+pagamentoBoleto.pagar();
