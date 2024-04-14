@@ -11,7 +11,7 @@
     }
 
     class Estagio {
-        titulo: string = 'Estágio';
+        titulo: string = 'Estágiario';
     }
 
     class FolhaDePagamento {
