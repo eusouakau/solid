@@ -6,6 +6,11 @@
     const CARGA_HORARIA_DIARIA_ESTAGIARIO = 4;
 
     const MES_COMERCIAL = 20; //dias trabalhados no mês
+
+    interface ContratoRemuneravel{
+        titulo: string;
+        remunecao(): number;
+    }
     class ContratoClt {
         titulo: string = 'CLT';
     }
