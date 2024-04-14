@@ -1,22 +1,24 @@
-abstract class Funcionario {
+interface Funcionario {
     nome: string;
     cargaHoraria: number;
-    salario: number;
+    trabalha(): void;
+}
 
+interface FuncionarioEfetivo extends Funcionario {
+    salario: number;
+    calculaSalarioLiquido(): number;
+    calculaParticipacaoDeLucros(lucro: number): number;
+}
+
+interface FuncionarioVoluntario extends Funcionario {
+    escreveRelatorio(): void;
+}
+
+class FuncionarioEfetivo implements FuncionarioEfetivo {
     constructor(nome: string, cargaHoraria: number, salario: number) {
         this.nome = nome;
         this.cargaHoraria = cargaHoraria;
         this.salario = salario;
-    }
-
-    abstract trabalha(): void;
-    abstract calculaSalarioLiquido(): number;
-    abstract calculaParticipacaoDeLucros(lucro: number): number;
-}
-
-class FuncionarioEfetivo extends Funcionario {
-    constructor(nome: string, cargaHoraria: number, salario: number) {
-        super(nome, cargaHoraria, salario);
     }
 
     trabalha(): void {
@@ -28,16 +30,18 @@ class FuncionarioEfetivo extends Funcionario {
         const desconto = this.salario * TAXA_DESCONTO;
         return this.salario - desconto;
     }
+
     calculaParticipacaoDeLucros(lucro: number): number {
         return lucro * this.salario;
     }
 }
 
-class FuncionarioVoluntario extends Funcionario {
+class FuncionarioVoluntario implements Funcionario {
     orientador: Funcionario;
 
     constructor(nome: string, cargaHorariaExtensao: number, funciarioEfetivo: Funcionario) {
-        super(nome, cargaHorariaExtensao, null as unknown as number);
+        this.nome = nome;
+        this.cargaHoraria = cargaHorariaExtensao;
         this.orientador = funciarioEfetivo;
     }
 
@@ -49,17 +53,10 @@ class FuncionarioVoluntario extends Funcionario {
         console.log(`Me chamo ${this.nome} e eu pesquiso ${this.cargaHoraria} horas por semana para cumprir na minha graduação`);
     }
 
-    calculaParticipacaoDeLucros(lucro: number): number {
-        throw new Error("Funcionário voluntário não tem participação de lucros");
-    }
-
-    calculaSalarioLiquido(): number {
-        throw new Error("Funcionário voluntário não tem salário");
-    }
 }
 
-const funcionarioEfetivo: Funcionario = new FuncionarioEfetivo("João", 40, 2400);
-const funcionarioVoluntario: Funcionario = new FuncionarioVoluntario("Enzo", 20, funcionarioEfetivo);
+const funcionarioEfetivo = new FuncionarioEfetivo("João", 40, 2400);
+const funcionarioVoluntario = new FuncionarioVoluntario("Enzo", 20, funcionarioEfetivo);
 
 //Efetivo
 console.log("nome:", funcionarioEfetivo.nome);
@@ -69,6 +66,4 @@ console.log("salário com PL:", funcionarioEfetivo.calculaParticipacaoDeLucros(2
 
 //Voluntário
 console.log("nome:", funcionarioVoluntario.nome);
-console.log("salário bruto:", funcionarioVoluntario.salario);
-console.log("salário líquido:", funcionarioVoluntario.calculaSalarioLiquido());
-console.log("salário com PL:", funcionarioVoluntario.calculaParticipacaoDeLucros(2.5)); 
+funcionarioVoluntario.escreveRelatorio();
